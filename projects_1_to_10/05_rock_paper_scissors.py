@@ -10,7 +10,7 @@ class RPS:
         self.moves: dict = {'rock': '🪨', 'paper': '📜', 'scissors': '✂️'}
         self.valid_moves: list[str] = list(self.moves.keys())
 
-    def make_move(self):
+    def play_game(self):
         # Get the user input and lower() it
         user_move: str = input('Rock, paper, or scissors? >> ').lower()
 
@@ -22,7 +22,7 @@ class RPS:
         # Check that the user made a valid move, else try again
         if user_move not in self.valid_moves:
             print('Invalid move...')
-            return self.make_move()
+            return self.play_game()
 
         # The AI's move
         ai_move: str = random.choice(self.valid_moves)
@@ -55,4 +55,4 @@ if __name__ == '__main__':
     rps = RPS()
 
     while True:
-        rps.make_move()
+        rps.play_game()
