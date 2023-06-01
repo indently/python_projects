@@ -57,7 +57,9 @@ def generate_password(length: int, symbols: bool, uppercase: bool) -> str:
 
 
 if __name__ == '__main__':
-    for _, index in enumerate(range(5), start=1):
-        my_pass: str = generate_password(length=15, symbols=True, uppercase=True)
-        specs: str = f'Upper: {contains_upper(my_pass)}, Symbols: {contains_symbols(my_pass)}'
-        print(f'{index} -> {my_pass} ({specs})')
+    # Generate 5 random passwords
+    for i in range(1, 6):
+        new_pass: str = generate_password(length=15, symbols=True, uppercase=True)
+        specs: str = f'U: {contains_upper(new_pass)}, S: {contains_symbols(new_pass)}'
+
+        print(f'{i} -> {new_pass} ({specs})')
