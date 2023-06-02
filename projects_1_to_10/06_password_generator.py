@@ -44,7 +44,7 @@ def generate_password(length: int, symbols: bool, uppercase: bool) -> str:
         combination += string.ascii_uppercase
 
     # Get the length of the combination characters
-    combination_length = len(combination)
+    combination_length: int = len(combination)
 
     # Create a new password variable
     new_password: str = ''
