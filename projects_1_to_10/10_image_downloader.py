@@ -12,12 +12,15 @@ def get_extension(image_url: str) -> str | None:
             return ext
 
 
-def download_image(image_url: str, name: str, folder: str):
+def download_image(image_url: str, name: str, folder: str = None):
     """Download the image from any given url"""
 
-    # Attempt to get the correct image extension from a url
+    # Attempt to get the correct image extension from an url
     if ext := get_extension(image_url):
-        image_name: str = f'{folder}/{name}{ext}'
+        if folder:
+            image_name: str = f'{folder}/{name}{ext}'
+        else:
+            image_name: str = f'{name}{ext}'
     else:
         raise Exception('Image extension could not be located...')
 
