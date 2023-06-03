@@ -38,16 +38,14 @@ def brute_force(word: str, length: int, digits=False, symbols=False) -> str | No
 
 
 def main():
-    print("Searching...")
+    print('Searching...')
     password: str = 'pass1'
 
     # Get the start time
     start_time: float = time.perf_counter()
 
     # Search for common words before using the actual brute force
-    common_match: str | None = common_guess(password)
-
-    if common_match:
+    if common_match := common_guess(password):
         print(common_match)
     else:
         if cracked := brute_force(password, length=5, digits=True, symbols=False):
