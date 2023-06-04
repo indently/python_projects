@@ -1,9 +1,10 @@
 from difflib import get_close_matches
 
 
-def get_best_match(user_question: str, questions: list[str]) -> str | None:
+def get_best_match(user_question: str, questions: dict) -> str | None:
     """Compares the user message similarity to the ones in the dictionary"""
 
+    questions: list[str] = [q for q in questions]
     matches: list = get_close_matches(user_question, questions, n=1, cutoff=0.6)
 
     # Return the first best match, else return None
@@ -18,7 +19,7 @@ def chatbot(knowledge: dict):
         user_input: str = input('You: ')
 
         # Finds the best match, otherwise returns None
-        best_match: str | None = get_best_match(user_input, [q for q in knowledge])
+        best_match: str | None = get_best_match(user_input, knowledge)
 
         # Gets the best match from the knowledge base
         if answer := knowledge.get(best_match):
