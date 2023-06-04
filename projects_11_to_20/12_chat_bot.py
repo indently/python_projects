@@ -11,15 +11,6 @@ def get_best_match(user_question: str, questions: list[str]) -> str | None:
         return matches[0]
 
 
-def get_answer(question: str, knowledge_base: dict) -> str | None:
-    """Loops through the knowledge base and returns an appropriate response"""
-
-    for q in knowledge_base:
-        # If there is a match, return the answer from that question
-        if q == question:
-            return knowledge_base[q]
-
-
 def chatbot(knowledge: dict):
     """Chatbot"""
 
@@ -29,7 +20,8 @@ def chatbot(knowledge: dict):
         # Finds the best match, otherwise returns None
         best_match: str | None = get_best_match(user_input, [q for q in knowledge])
 
-        if answer := get_answer(best_match, knowledge):
+        # Gets the best match from the knowledge base
+        if answer := knowledge.get(best_match):
             print(f'Bot: {answer}')
         else:
             print('Bot: I don\'t understand... Could you try rephrasing that?')
