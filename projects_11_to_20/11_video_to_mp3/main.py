@@ -5,7 +5,7 @@ from pytube import YouTube
 
 
 # If you get a certificate error in the terminal run:
-# # /Applications/Python\ 3.11/Install\ Certificates.command
+# /Applications/Python\ 3.11/Install\ Certificates.command
 
 
 def url_to_mp3(video_url: str):
