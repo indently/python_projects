@@ -21,7 +21,7 @@ def get_answer(question: str, knowledge_base: dict) -> str | None:
 
 
 def chatbot(knowledge: dict):
-    """"""
+    """Chatbot"""
 
     while True:
         user_input: str = input('You: ')
