@@ -23,6 +23,7 @@ def get_coins() -> list[Coin]:
     """
     Gets coins from an api and returns them as a list[Coin]
     API: https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur
+
     """
 
     # Make the request in euros
