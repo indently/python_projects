@@ -1,7 +1,7 @@
 from crypto_data import get_coins, Coin
 
 
-def create_alert(symbol: str, bottom: float, top: float, coins_list: list[Coin]):
+def check_crypto(symbol: str, bottom: float, top: float, coins_list: list[Coin]):
     """Creates an alert for the given price range of a coin"""
 
     for coin in coins_list:
@@ -16,9 +16,7 @@ def create_alert(symbol: str, bottom: float, top: float, coins_list: list[Coin])
 if __name__ == '__main__':
     coins: list[Coin] = get_coins()
 
-    create_alert('btc', bottom=10, top=20_000, coins_list=coins)
-    create_alert('eth', bottom=10, top=1_700, coins_list=coins)
-    create_alert('xrp', bottom=0.47, top=0.48, coins_list=coins)
-
-    # for coin in coins:
-    #     print(coin)
+    # Create a loop for these to create live alerts
+    check_crypto('btc', bottom=10, top=20_000, coins_list=coins)
+    check_crypto('eth', bottom=10, top=1_700, coins_list=coins)
+    check_crypto('xrp', bottom=0.47, top=0.48, coins_list=coins)
