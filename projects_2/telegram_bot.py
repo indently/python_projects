@@ -4,8 +4,8 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 # pip install python-telegram-bot
 
 # Constants
-TOKEN: Final[str] = '5853030011:AAHQCgo-fKd7ksVZZJ-eIpsAopasGAyziCQ'
-BOT_USERNAME: Final[str] = '@cool_abc_bot'
+TOKEN: Final[str] = 'YOUR_TOKEN'
+BOT_USERNAME: Final[str] = '@YOUR_BOT'
 
 
 # Commands
