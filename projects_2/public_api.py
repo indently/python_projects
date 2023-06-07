@@ -20,7 +20,7 @@ def random():
     """The random endpoint of our api."""
 
     # Define some queries for our api endpoint
-    number_input = request.args.get('number', type=int, default=100)
+    number_input = request.args.get('number', type=int)
     text_input = request.args.get('text', type=str, default='default_text')
 
     # Check that the number is of the correct type before doing anything
