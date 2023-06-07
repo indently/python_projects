@@ -38,7 +38,7 @@ def track_habit(name: str, start: datetime, cost: float, minutes_used: float) ->
     total_money_saved: str = f'€{round(money_saved + (minutes_used / 60 * hourly_wage), 2)}'
 
     # Amount of days remaining until you break a habit
-    days_to_go: float | str = round(goal - days)
+    days_to_go: float = round(goal - days)
 
     # Displayable information
     remaining_days: str = 'Cleared!' if days_to_go <= 0 else f'{days_to_go}'
