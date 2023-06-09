@@ -18,7 +18,7 @@ class Weather:
     description: str
 
     def __str__(self):
-        return f'[{self.date:%H:%M}] {self.temp} C ({self.description})'
+        return f'[{self.date:%H:%M}] {self.temp}C° ({self.description})'
 
 
 def get_weather(city_name: str, mock: bool = True) -> dict:
@@ -44,7 +44,7 @@ def get_weather_details(weather: dict) -> list[Weather]:
 
     # If there is no data for days, no point in continuing
     if not days:
-        raise Exception('No data in JSON')
+        raise Exception(f'Problem with json: {weather}')
 
     # Try to add the info we want to our list_of_weather
     list_of_weather: list[Weather] = []
