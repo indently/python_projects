@@ -1,19 +1,12 @@
 from weather_api import get_weather, get_weather_details, Weather
 
-"""
-Bonus assignment:
-1) Make it so the app retrieves the users city through their IP address
-2) Use that city to give them details about their current location
-3) Clean the data in the console to make it look more user friendly :)
-"""
-
 
 def main():
     # Ask the user for their city
     user_city: str = input('Enter a city: ')
 
     # Get the current weather details
-    current_weather: dict = get_weather(user_city, mock=False)
+    current_weather: dict = get_weather(user_city, mock=True)
     weather_details: list[Weather] = get_weather_details(current_weather)
 
     # Get the current days

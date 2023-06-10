@@ -9,11 +9,12 @@ API_KEY: Final[str] = 'YOUR_KEY'
 BASE_URL: Final[str] = 'https://api.openweathermap.org/data/2.5/forecast'
 
 
-def get_weather(city_name: str, mock: bool = True) -> dict:
+def get_weather(city_name: str, mock: bool = False) -> dict:
     """Gets the current weather from the weather api"""
 
     # Return dummy data for testing
     if mock:
+        print('Using mock data...')
         with open('dummy_data.json') as file:
             return json.load(file)
 
