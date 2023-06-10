@@ -13,8 +13,8 @@ def main():
     user_city: str = input('Enter a city: ')
 
     # Get the current weather details
-    current_weather: dict = (get_weather(user_city, mock=False))
-    weather_details: list[Weather] | None = get_weather_details(current_weather)
+    current_weather: dict = get_weather(user_city, mock=False)
+    weather_details: list[Weather] = get_weather_details(current_weather)
 
     # Get the current days
     dfmt: str = '%d/%m/%y'
