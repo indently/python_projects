@@ -23,6 +23,16 @@ def get_rates(mock: bool = False) -> dict:
     return data
 
 
+def get_currency(currency: str, rates: dict) -> float:
+    """Get the exchange rate for the specified currency if it exists."""
+
+    currency: str = currency.upper()
+    if currency in rates.keys():
+        return rates.get(currency)
+    else:
+        raise ValueError(f'"{currency}" is not a valid currency.')
+
+
 def convert_currency(amount: float, base: str, vs: str, rates: dict) -> float:
     """Convert the base currency to the vs currency at the given rate."""
 
@@ -34,16 +44,6 @@ def convert_currency(amount: float, base: str, vs: str, rates: dict) -> float:
     conversion: float = round((vs_rate / base_rate) * amount, 2)
     print(f'{amount:,.2f} ({base}) is: {conversion:,.2f} ({vs})')
     return conversion
-
-
-def get_currency(currency: str, rates: dict) -> float:
-    """Get the exchange rate for the specified currency if it exists."""
-
-    currency: str = currency.upper()
-    if currency in rates.keys():
-        return rates.get(currency)
-    else:
-        raise ValueError(f'"{currency}" is not a valid currency.')
 
 
 def main():
