@@ -1,4 +1,4 @@
-from model import get_weather, get_weather_details, Weather
+from weather_api import get_weather, get_weather_details, Weather
 
 """
 Bonus assignment:
