@@ -6,7 +6,8 @@ def get_soup() -> BeautifulSoup:
     """Get the soup back from the website, mmm..."""
 
     # Make a request
-    headers: dict = {'User-Agent': 'Mozilla/5.0'}
+    headers: dict = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/114.0'}
     request = requests.get('https://www.bbc.com/news', headers=headers)
     html: bytes = request.content
 
@@ -23,9 +24,7 @@ def get_headlines(soup: BeautifulSoup) -> list[str]:
     # Finds all the headers in BBC Home
     for h in soup.findAll('h3', class_='gs-c-promo-heading__title'):
         headline: str = h.contents[0].lower()
-
-        if 'bbc' not in headline:
-            headlines.add(headline)
+        headlines.add(headline)
 
     return sorted(headlines)
 
@@ -37,7 +36,7 @@ def check_headlines(headlines: list[str], term: str):
     terms_found: int = 0
 
     # Loop through the headlines to find the keyword
-    for i, headline, in enumerate(headlines, start=1):
+    for i, headline in enumerate(headlines, start=1):
         if term.lower() in headline:
             terms_found += 1
             term_list.append(headline)
