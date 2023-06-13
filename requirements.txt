@@ -54,5 +54,5 @@ tzdata==2023.3
 urllib3==2.0.2
 Werkzeug==2.3.4
 wsproto==1.2.0
-
 beautifulsoup4~=4.12.2
+pypdf2~=3.0.1
