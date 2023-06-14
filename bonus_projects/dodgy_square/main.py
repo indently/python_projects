@@ -9,6 +9,7 @@ class DodgySquare:
     def __init__(self):
         # Pygame
         pygame.init()
+        pygame.mouse.set_visible(False)
 
         # Screen
         self.screen_width, self.screen_height = 600, 600
@@ -21,7 +22,8 @@ class DodgySquare:
         self.RED: tuple = (255, 99, 71)
 
         # Font
-        self.font: Font = pygame.font.Font(None, 36)
+        default_font: str = pygame.font.get_default_font()
+        self.font: Font = pygame.font.Font(default_font, 26)
 
         # Player
         self.player_size: int = 50
@@ -33,7 +35,7 @@ class DodgySquare:
         self.enemy_pos: list[int] = [random.randint(0, self.screen_width - self.enemy_size), 0]
         self.enemy_list = [self.enemy_pos]
         self.enemy_speed: int = 3  # Low = slow, High = Fast
-        self.enemy_frequency: int = 30  # Low = Lots, High = Few
+        self.enemy_frequency: int = 20  # Low = Lots, High = Few
 
         # Clock
         self.clock: Clock = pygame.time.Clock()
@@ -42,11 +44,6 @@ class DodgySquare:
         self.game_over: bool = False
         self.score: int = 0
         self.frame_count: int = 0
-        self.tick: float = 30
-
-        # Set up enemy speed and frequency
-        self.enemy_speed: int = 3
-        self.enemy_frequency: int = 30  # Number of frames between enemy creation
 
     def create_enemy(self):
         """Creates a new enemy at a random position"""
@@ -72,6 +69,10 @@ class DodgySquare:
                 self.score += 1
                 self.enemy_speed += 0.1
 
+                if self.enemy_frequency > 5:
+                    if self.score // 5 == 0:
+                        self.enemy_frequency -= 2
+
     def detect_collision(self, player_pos: list[int], enemy_pos: list[int]) -> bool:
         """Collision detection logic for checking if squares are intercepting"""
 
@@ -96,6 +97,7 @@ class DodgySquare:
         self.player_pos: list[int] = [self.screen_width // 2, self.screen_height - (2 * self.player_size)]
         self.enemy_list = [self.enemy_pos]
         self.enemy_speed: int = 3
+        self.enemy_frequency = 30
         self.score: int = 0
         self.game_over: bool = False
         self.frame_count: int = 0
@@ -117,21 +119,19 @@ class DodgySquare:
 
                 # Handle key events
                 if event.type == pygame.KEYDOWN:
-                    match event.key:
-                        case pygame.K_LEFT:
-                            self.player_pos[0] -= self.player_speed
-                        case pygame.K_RIGHT:
-                            self.player_pos[0] += self.player_speed
-                        case pygame.K_UP:
-                            self.player_pos[1] -= self.player_speed
-                        case pygame.K_DOWN:
-                            self.player_pos[1] += self.player_speed
-                        case pygame.K_r if self.game_over:
-                            self.replay_game()
+                    if self.game_over and event.key == pygame.K_r:
+                        self.replay_game()
+
+                # Get the current mouse position
+                mouse_pos: tuple[int, int] = pygame.mouse.get_pos()
+
+                # Update the player's position to follow the mouse
+                self.player_pos[0] = mouse_pos[0] - self.player_size // 2
+                self.player_pos[1] = mouse_pos[1] - self.player_size // 2
 
                 # Make sure the player stays on the screen
-                self.player_pos[0]: int = max(0, min(self.player_pos[0], self.screen_width - self.player_size))
-                self.player_pos[1]: int = max(0, min(self.player_pos[1], self.screen_height - self.player_size))
+                self.player_pos[0] = max(0, min(self.player_pos[0], self.screen_width - self.player_size))
+                self.player_pos[1] = max(0, min(self.player_pos[1], self.screen_height - self.player_size))
 
             if not self.game_over:
                 self.update_enemy_positions()
