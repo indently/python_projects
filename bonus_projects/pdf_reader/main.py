@@ -11,7 +11,7 @@ def extract_text_from_pdf(pdf_file: str) -> list[str]:
 
         # Display the amount of pages to the user
         print('Pages:', len(reader.pages))
-        print('-'*10)  # Divider
+        print('-' * 10)  # Divider
 
         # Extract the text from each page
         pdf_text: list[str] = [page.extract_text() for page in reader.pages]
@@ -23,16 +23,11 @@ def count_words(text_list: list[str]) -> Counter:
     all_words: list[str] = []
     for text in text_list:
         # Split each list into separate words without symbols
-        split_message = re.split(r'\s+|[,;?!.-]\s*', text.lower())
-        #print(split_message)
+        split_text: list[str] = re.split(r'\s+|[,;?!.-]\s*', text.lower())
+        # print(split_text)
 
-        # Lowercase each word in the split message
-        lowered: list[str] = [word.lower() for word in split_message]
-
-        # Flatten the list by appending to a new list
-        for word in lowered:
-            if word:
-                all_words.append(word)
+        # Add the words to the new list if the word is not empty
+        all_words += [word for word in split_text if word]
 
     # Return a counter object
     return Counter(all_words)
@@ -44,8 +39,8 @@ def main():
     counter: Counter = count_words(extracted_text)
 
     # Show the text that we extracted
-    for text in extracted_text:
-        print(text)
+    for page in extracted_text:
+        print(page)
 
     # Display the 5 most common words
     for word, mentions in counter.most_common(5):
