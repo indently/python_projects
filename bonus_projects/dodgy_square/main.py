@@ -14,17 +14,17 @@ class DodgySquare:
         # Screen
         self.screen_width, self.screen_height = 600, 600
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
-        pygame.display.set_caption("Dodgy Square")
+        pygame.display.set_caption('Dodgy Square')
 
         # Colours
         self.WHITE: tuple = (255, 255, 255)
         self.BLACK: tuple = (0, 0, 0)
         self.RED: tuple = (255, 99, 71)
-        self.BLUE: tuple = (65,105,225)
+        self.BLUE: tuple = (65, 105, 225)
 
         # Font
-        default_font: str = pygame.font.get_default_font()
-        self.font: Font = pygame.font.Font(default_font, 26)
+        self.default_font: str = pygame.font.get_default_font()
+        self.font: Font = pygame.font.Font(self.default_font, 26)
 
         # Player
         self.player_size: int = 30
@@ -89,7 +89,7 @@ class DodgySquare:
     def show_game_over(self):
         """Display game-over text"""
 
-        game_over_text = self.font.render("Game Over", True, self.WHITE)
+        game_over_text = self.font.render('Game Over', True, self.WHITE)
         self.screen.blit(game_over_text, (self.screen_width // 2 - 70, self.screen_height // 2 - 16))
 
     # Replay the game
@@ -160,7 +160,7 @@ class DodgySquare:
                         self.draw_character(self.RED, enemy_pos, self.enemy_size)
 
                 # Display the score
-                score_text = self.font.render("Score: " + str(self.score), True, self.WHITE)
+                score_text = self.font.render('Score: ' + str(self.score), True, self.WHITE)
                 self.screen.blit(score_text, [10, 10])
 
                 # Increment the frame count
