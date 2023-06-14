@@ -97,7 +97,7 @@ class DodgySquare:
         self.player_pos: list[int] = [self.screen_width // 2, self.screen_height - (2 * self.player_size)]
         self.enemy_list = [self.enemy_pos]
         self.enemy_speed: int = 3
-        self.enemy_frequency = 30
+        self.enemy_frequency = 20
         self.score: int = 0
         self.game_over: bool = False
         self.frame_count: int = 0
