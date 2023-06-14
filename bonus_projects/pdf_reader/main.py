@@ -1,51 +1,179 @@
-import re
-from collections import Counter
-from PyPDF2 import PdfReader
+import pygame
+from pygame.font import Font
+from pygame.time import Clock
+import random
+import sys
 
 
-def extract_text_from_pdf(pdf_file: str) -> list[str]:
-    """Extract text from a PDF file and return it as a list of str"""
+class DodgySquare:
+    def __init__(self):
+        # Pygame
+        pygame.init()
+        pygame.mouse.set_visible(False)
 
-    with open(pdf_file, 'rb') as pdf:
-        reader = PdfReader(pdf, strict=False)
+        # Screen
+        self.screen_width, self.screen_height = 600, 600
+        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
+        pygame.display.set_caption("Dodgy Square")
 
-        # Display the amount of pages to the user
-        print('Pages:', len(reader.pages))
-        print('-' * 10)  # Divider
+        # Colours
+        self.WHITE: tuple = (255, 255, 255)
+        self.BLACK: tuple = (0, 0, 0)
+        self.RED: tuple = (255, 99, 71)
+        self.BLUE: tuple = (65,105,225)
 
-        # Extract the text from each page
-        pdf_text: list[str] = [page.extract_text() for page in reader.pages]
-        return pdf_text
+        # Font
+        default_font: str = pygame.font.get_default_font()
+        self.font: Font = pygame.font.Font(default_font, 26)
+
+        # Player
+        self.player_size: int = 40
+        self.player_speed: int = self.player_size // 2
+        self.player_pos: list[int] = [0, 0]
+
+        # Enemies
+        self.enemy_size: int = 50
+        self.enemy_pos: list[int] = []
+        self.enemy_list = []
+        self.enemy_speed: int = 3  # Low = slow, High = Fast
+        self.enemy_frequency: int = 20  # Low = Lots, High = Few
+
+        # Clock
+        self.clock: Clock = pygame.time.Clock()
+
+        # Game data
+        self.game_over: bool = False
+        self.score: int = 0
+        self.frame_count: int = 0
+
+    def create_enemy(self):
+        """Creates a new enemy at a random position"""
+
+        enemy_pos = [random.randint(0, self.screen_width - self.enemy_size), -self.enemy_size]
+        self.enemy_list.append(enemy_pos)
+
+    # Function to update enemy positions
+    def update_enemy_positions(self):
+        """Check whether it is time to create a new enemy and then does so"""
+
+        if self.frame_count % self.enemy_frequency == 0:
+            self.create_enemy()
+
+        # Give each enemy an id
+        for idx, enemy_pos in enumerate(self.enemy_list):
+            # Simulate gravity until off-screen
+            if -self.enemy_size <= enemy_pos[1] < self.screen_height:
+                enemy_pos[1] += self.enemy_speed
+            else:
+                # When the enemy has passed
+                self.enemy_list.pop(idx)
+                self.score += 1
+                self.enemy_speed += 0.1
+
+                # Increase the difficulty each 15 points
+                if self.enemy_frequency > 10:
+                    if self.score % 15 == 0:
+                        self.enemy_frequency -= 2
+                        # print(self.score, self.enemy_frequency, sep=' -> ')
+
+    def detect_collision(self, player_pos: list[int], enemy_pos: list[int]) -> bool:
+        """Collision detection logic for checking if squares are intercepting"""
+
+        px, py = player_pos
+        ex, ey = enemy_pos
+        if (px <= ex < (px + self.player_size)) or (ex <= px < (ex + self.enemy_size)):
+            if (py <= ey < (py + self.player_size)) or (ey <= py < (ey + self.enemy_size)):
+                return True
+        return False
+
+    # Game over text
+    def show_game_over(self):
+        """Display game-over text"""
+
+        game_over_text = self.font.render("Game Over", True, self.WHITE)
+        self.screen.blit(game_over_text, (self.screen_width // 2 - 70, self.screen_height // 2 - 16))
+
+    # Replay the game
+    def replay_game(self):
+        """Reset everything to its initial state"""
+
+        self.enemy_list = []
+        self.enemy_speed: int = 3
+        self.enemy_frequency = 20
+        self.game_over: bool = False
+        self.frame_count: int = 0
+        self.score: int = 0
+
+    def draw_character(self, color: tuple, position: list[int], size: int):
+        """Draws a rectangle on the screen"""
+
+        pygame.draw.rect(self.screen, color, (position[0], position[1], size, size))
+
+    # Main game loop
+    def run(self):
+        """Run the game"""
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                # Handle key events
+                if event.type == pygame.KEYDOWN:
+                    if self.game_over and event.key == pygame.K_r:
+                        self.replay_game()
+
+                # Get the current mouse position
+                mouse_pos: tuple[int, int] = pygame.mouse.get_pos()
+
+                # Update the player's position to follow the mouse
+                self.player_pos[0] = mouse_pos[0] - self.player_size // 2
+                self.player_pos[1] = mouse_pos[1] - self.player_size // 2
+
+                # Make sure the player stays on the screen
+                self.player_pos[0] = max(0, min(self.player_pos[0], self.screen_width - self.player_size))
+                self.player_pos[1] = max(0, min(self.player_pos[1], self.screen_height - self.player_size))
+
+            if not self.game_over:
+                self.update_enemy_positions()
+
+                # Check for collisions
+                for enemy_pos in self.enemy_list:
+                    if self.detect_collision(self.player_pos, enemy_pos):
+                        self.game_over = True
+                        break
+
+                # Reset everything for the next frame
+                self.screen.fill(self.BLACK)
+
+                # Draw the player
+                self.draw_character(self.WHITE, self.player_pos, self.player_size)
+
+                # Draw the enemies
+                for enemy_pos in self.enemy_list:
+                    if self.score > 100:
+                        self.draw_character(self.BLUE, enemy_pos, self.enemy_size)
+                    else:
+                        self.draw_character(self.RED, enemy_pos, self.enemy_size)
+
+                # Display the score
+                score_text = self.font.render("Score: " + str(self.score), True, self.WHITE)
+                self.screen.blit(score_text, [10, 10])
+
+                # Increment the frame count
+                self.frame_count += 1
+            else:
+                self.show_game_over()
+
+            # Update the display
+            pygame.display.update()
+
+            # Frame rate
+            self.clock.tick(60)
 
 
-def count_words(text_list: list[str]) -> Counter:
-    # Flatten the lists
-    all_words: list[str] = []
-    for text in text_list:
-        # Split each list into separate words without symbols
-        split_text: list[str] = re.split(r'\s+|[,;?!.-]\s*', text.lower())
-        # print(split_text)
-
-        # Add the words to the new list if the word is not empty
-        all_words += [word for word in split_text if word]
-
-    # Return a counter object
-    return Counter(all_words)
-
-
-def main():
-    # Extract text and create a counter
-    extracted_text: list[str] = extract_text_from_pdf('sample.pdf')
-    counter: Counter = count_words(extracted_text)
-
-    # Show the text that we extracted
-    for page in extracted_text:
-        print(page)
-
-    # Display the 5 most common words
-    for word, mentions in counter.most_common(5):
-        print(f'{word:10}: {mentions} times')
-
-
+# Run the game
 if __name__ == '__main__':
-    main()
+    game = DodgySquare()
+    game.run()

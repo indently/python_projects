@@ -20,20 +20,20 @@ class DodgySquare:
         self.WHITE: tuple = (255, 255, 255)
         self.BLACK: tuple = (0, 0, 0)
         self.RED: tuple = (255, 99, 71)
+        self.BLUE: tuple = (65,105,225)
 
         # Font
         default_font: str = pygame.font.get_default_font()
         self.font: Font = pygame.font.Font(default_font, 26)
 
         # Player
-        self.player_size: int = 50
-        self.player_speed: int = self.player_size // 2
-        self.player_pos: list[int] = [self.screen_width // 2, self.screen_height - (2 * self.player_size)]
+        self.player_size: int = 30
+        self.player_pos: list[int] = [0, 0]
 
         # Enemies
         self.enemy_size: int = 50
-        self.enemy_pos: list[int] = [random.randint(0, self.screen_width - self.enemy_size), 0]
-        self.enemy_list = [self.enemy_pos]
+        self.enemy_pos: list[int] = []
+        self.enemy_list = []
         self.enemy_speed: int = 3  # Low = slow, High = Fast
         self.enemy_frequency: int = 20  # Low = Lots, High = Few
 
@@ -48,7 +48,7 @@ class DodgySquare:
     def create_enemy(self):
         """Creates a new enemy at a random position"""
 
-        enemy_pos = [random.randint(0, self.screen_width - self.enemy_size), 0]
+        enemy_pos = [random.randint(0, self.screen_width - self.enemy_size), -self.enemy_size]
         self.enemy_list.append(enemy_pos)
 
     # Function to update enemy positions
@@ -61,7 +61,7 @@ class DodgySquare:
         # Give each enemy an id
         for idx, enemy_pos in enumerate(self.enemy_list):
             # Simulate gravity until off-screen
-            if 0 <= enemy_pos[1] < self.screen_height:
+            if -self.enemy_size <= enemy_pos[1] < self.screen_height:
                 enemy_pos[1] += self.enemy_speed
             else:
                 # When the enemy has passed
@@ -69,9 +69,11 @@ class DodgySquare:
                 self.score += 1
                 self.enemy_speed += 0.1
 
-                if self.enemy_frequency > 5:
-                    if self.score // 5 == 0:
+                # Increase the difficulty each 15 points
+                if self.enemy_frequency > 10:
+                    if self.score % 15 == 0:
                         self.enemy_frequency -= 2
+                        # print(self.score, self.enemy_frequency, sep=' -> ')
 
     def detect_collision(self, player_pos: list[int], enemy_pos: list[int]) -> bool:
         """Collision detection logic for checking if squares are intercepting"""
@@ -94,13 +96,15 @@ class DodgySquare:
     def replay_game(self):
         """Reset everything to its initial state"""
 
-        self.player_pos: list[int] = [self.screen_width // 2, self.screen_height - (2 * self.player_size)]
-        self.enemy_list = [self.enemy_pos]
+        # Reset enemies
+        self.enemy_list = []
         self.enemy_speed: int = 3
         self.enemy_frequency = 20
-        self.score: int = 0
+
+        # Reset game stats
         self.game_over: bool = False
         self.frame_count: int = 0
+        self.score: int = 0
 
     def draw_character(self, color: tuple, position: list[int], size: int):
         """Draws a rectangle on the screen"""
@@ -150,7 +154,10 @@ class DodgySquare:
 
                 # Draw the enemies
                 for enemy_pos in self.enemy_list:
-                    self.draw_character(self.RED, enemy_pos, self.enemy_size)
+                    if self.score > 100:
+                        self.draw_character(self.BLUE, enemy_pos, self.enemy_size)
+                    else:
+                        self.draw_character(self.RED, enemy_pos, self.enemy_size)
 
                 # Display the score
                 score_text = self.font.render("Score: " + str(self.score), True, self.WHITE)

@@ -56,3 +56,4 @@ Werkzeug==2.3.4
 wsproto==1.2.0
 beautifulsoup4~=4.12.2
 pypdf2~=3.0.1
+pygame~=2.4.0
