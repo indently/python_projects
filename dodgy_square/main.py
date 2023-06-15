@@ -34,7 +34,7 @@ class DodgySquare:
         self.enemy_size: int = 50
         self.enemy_pos: list[int] = []
         self.enemy_list = []
-        self.enemy_speed: int = 3  # Low = slow, High = Fast
+        self.enemy_speed: float = 3  # Low = slow, High = Fast
         self.enemy_frequency: int = 20  # Low = Lots, High = Few
 
         # Clock
@@ -48,7 +48,7 @@ class DodgySquare:
     def create_enemy(self):
         """Creates a new enemy at a random position"""
 
-        enemy_pos = [random.randint(0, self.screen_width - self.enemy_size), -self.enemy_size]
+        enemy_pos: list[int] = [random.randint(0, self.screen_width - self.enemy_size), -self.enemy_size]
         self.enemy_list.append(enemy_pos)
 
     # Function to update enemy positions
@@ -98,8 +98,8 @@ class DodgySquare:
 
         # Reset enemies
         self.enemy_list = []
-        self.enemy_speed: int = 3
-        self.enemy_frequency = 20
+        self.enemy_speed: float = 3
+        self.enemy_frequency: int = 20
 
         # Reset game stats
         self.game_over: bool = False
@@ -160,7 +160,7 @@ class DodgySquare:
                         self.draw_character(self.RED, enemy_pos, self.enemy_size)
 
                 # Display the score
-                score_text = self.font.render('Score: ' + str(self.score), True, self.WHITE)
+                score_text = self.font.render(f'Score: {self.score}', True, self.WHITE)
                 self.screen.blit(score_text, [10, 10])
 
                 # Increment the frame count
