@@ -89,8 +89,13 @@ class DodgySquare:
     def show_game_over(self):
         """Display game-over text"""
 
+        # Create the text
         game_over_text = self.font.render('Game Over', True, self.WHITE)
-        self.screen.blit(game_over_text, (self.screen_width // 2 - 70, self.screen_height // 2 - 16))
+
+        # Make sure the text is centred
+        text_width, text_height = game_over_text.get_size()
+        coordinates: tuple = (self.screen_width // 2 - text_width // 2, self.screen_height // 2 - text_height // 2)
+        self.screen.blit(game_over_text, coordinates)
 
     # Replay the game
     def replay_game(self):
