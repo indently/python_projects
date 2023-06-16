@@ -57,3 +57,4 @@ wsproto==1.2.0
 beautifulsoup4~=4.12.2
 pypdf2~=3.0.1
 pygame~=2.4.0
+customtkinter~=5.1.3
