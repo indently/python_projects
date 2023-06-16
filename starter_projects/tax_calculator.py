@@ -32,8 +32,8 @@ class TaxCalculator:
         self.result_entry.grid(row=2, column=1, **self.padding)
 
         # Calculate button
-        self.button_calculate = ctk.CTkButton(self.window, text='Calculate', command=self.calculate_tax)
-        self.button_calculate.grid(row=3, column=1, **self.padding)
+        self.calculate_button = ctk.CTkButton(self.window, text='Calculate', command=self.calculate_tax)
+        self.calculate_button.grid(row=3, column=1, **self.padding)
 
     def update_result(self, text: str):
         """Updates the result of the tax field."""
