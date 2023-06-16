@@ -18,6 +18,7 @@ def get_coordinates(address: str) -> Coordinates | None:
     geolocator = Nominatim(user_agent="distance_calculator")
     location = geolocator.geocode(address)
 
+    # If there is a location for the address, extract the information
     if location:
         return Coordinates(latitude=location.latitude, longitude=location.longitude)
 
@@ -25,6 +26,7 @@ def get_coordinates(address: str) -> Coordinates | None:
 def calculate_distance_km(home: Coordinates, target: Coordinates) -> float | None:
     """Calculates the distance in km for the home coordinates and the target coordinates."""
 
+    # Make sure we have both the home and the target coordinates
     if home and target:
         distance: float = geodesic(home.coordinates(), target.coordinates()).kilometers
         return distance
@@ -48,13 +50,13 @@ def get_distance_km(home: str, target: str) -> float | None:
 
 def main():
     # Start address for testing
-    start_address: str = 'Helsinkigade 10, Copenhagen 2150, Denmark'
-    print(f'Start address: {start_address}')
+    home_address: str = 'Helsinkigade 10, Copenhagen 2150, Denmark'
+    print(f'Home address: {home_address}')
 
     # Get the users address and calculate the distance
     target_address: str = input('Enter an address: ')
     print('Calculating...')
-    get_distance_km(start_address, target=target_address)
+    get_distance_km(home_address, target=target_address)
 
 
 if __name__ == '__main__':
