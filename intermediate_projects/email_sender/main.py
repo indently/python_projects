@@ -55,4 +55,4 @@ def send_email(to_email: str, subject: str, body: str, image: Any = None):
 
 
 if __name__ == '__main__':
-    send_email(to_email='indently@fastmail.com', subject='hello', body='this is a message', image='cat.png')
+    send_email(to_email='TARGET_EMAIL@EXAMPLE.COM', subject='hello', body='this is a message', image='cat.png')
