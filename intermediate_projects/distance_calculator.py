@@ -42,7 +42,7 @@ def get_distance_km(home: str, target: str) -> float | None:
     # Calculate the distance
     if distance := calculate_distance_km(home_coordinates, target_coordinates):
         print(f'{home} -> {target}')
-        print(f'{distance:.2f} kilometers')
+        print(f'{distance:.2f} kilometres')
         return distance
     else:
         print('Failed to calculate the distance.')
