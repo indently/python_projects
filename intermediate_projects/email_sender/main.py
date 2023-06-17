@@ -3,7 +3,6 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from typing import Any
-
 import credentials
 
 
@@ -30,8 +29,9 @@ def send_email(to_email: str, subject: str, body: str, image: Any = None):
     with smtplib.SMTP(host, port) as server:
         # Login
         print('Logging in...')
-        server.ehlo()
+        server.ehlo()  # Used to greet the server and identify who we are
         server.starttls(context=context)
+        server.ehlo()
         server.login(credentials.EMAIL, credentials.PASSWORD)  # NEVER INCLUDE SENSITIVE VALUES IN YOUR SCRIPTS!!!
 
         # Prepare the email
