@@ -35,7 +35,7 @@ def send_email(to_email: str, subject: str, body: str, image: Any = None):
         server.login(credentials.EMAIL, credentials.PASSWORD)  # NEVER INCLUDE SENSITIVE VALUES IN YOUR SCRIPTS!!!
 
         # Prepare the email
-        print('Attempting to send the message...')
+        print('Attempting to send the email...')
         message = MIMEMultipart()
         message['From'] = credentials.EMAIL
         message['To'] = to_email
