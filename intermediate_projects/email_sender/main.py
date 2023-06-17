@@ -2,23 +2,19 @@ import smtplib, ssl
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from typing import Any
 import credentials
 
 
-def create_image_attachment(path: Any) -> MIMEImage:
+def create_image_attachment(path: str) -> MIMEImage:
     """Create an image type for our email and add a header to it."""
 
-    try:
-        with open(path, 'rb') as image:
-            mime_image = MIMEImage(image.read())
-            mime_image.add_header('Content-Disposition', f'attachment; filename={path}')
-            return mime_image
-    except Exception as e:
-        print('Error:', e)
+    with open(path, 'rb') as image:
+        mime_image = MIMEImage(image.read())
+        mime_image.add_header('Content-Disposition', f'attachment; filename={path}')
+        return mime_image
 
 
-def send_email(to_email: str, subject: str, body: str, image: Any = None):
+def send_email(to_email: str, subject: str, body: str, image: str | None = None):
     # Specify the host and the port
     host: str = 'smtp-mail.outlook.com'
     port: int = 587
