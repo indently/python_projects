@@ -1,5 +1,9 @@
 def check_password(password: str):
-    """Checks whether a password is in the 100.000 most common passwords."""
+    """
+    Checks whether a password is in the 100.000 most common passwords.
+    Sourced from: https://github.com/danielmiessler/SecLists/blob/master/Passwords/Common-Credentials/10-million-password-list-top-100000.txt
+
+    """
 
     # Open up the file with most common passwords
     with open('passwords.text', 'r') as file:
