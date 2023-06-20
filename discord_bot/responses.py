@@ -14,24 +14,21 @@ def get_best_match(user_question: str, questions: dict) -> str | None:
 
 
 def get_response(message: str, knowledge: dict) -> str:
-    while True:
-        # Finds the best match, otherwise returns None
-        best_match: str | None = get_best_match(message, knowledge)
+    # Finds the best match, otherwise returns None
+    best_match: str | None = get_best_match(message, knowledge)
 
-        # Gets the best match from the knowledge base
-        if answer := knowledge.get(best_match):
-            return answer
-        else:
-            return 'I don\'t understand... Could you try rephrasing that?'
+    # Gets the best match from the knowledge base
+    if answer := knowledge.get(best_match):
+        return answer
+    else:
+        return 'I don\'t understand... Could you try rephrasing that?'
 
 
 def load_knowledge(file: str) -> dict:
     with open(file, 'r') as f:
         return json.load(f)
 
-
 # if __name__ == "__main__":
 #     test_knowledge: dict = load_knowledge('knowledge.json')
 #     test_response: str = get_response('hello', knowledge=test_knowledge)
 #     print(test_response)
-
